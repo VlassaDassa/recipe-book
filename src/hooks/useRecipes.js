@@ -1,55 +1,116 @@
 import { useState, useEffect } from 'react'
+import { recipesAPI } from '../api/client'
+import { useAuth } from '../context/AuthContext'
 import { DEMO_RECIPES } from '../utils/constants'
-
-const STORAGE_KEY = 'myRecipes'
+import { toast } from '../components/Toast'
 
 export function useRecipes() {
-  const [recipes, setRecipes] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      return JSON.parse(saved)
-    }
-    return DEMO_RECIPES
-  })
+  const { user } = useAuth()
+  const [recipes, setRecipes] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  // Сохранение в localStorage при каждом изменении
+  // Загружаем рецепты при изменении пользователя
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes))
-  }, [recipes])
-
-  // Добавление нового рецепта
-  const addRecipe = (recipeData) => {
-    const newRecipe = {
-      ...recipeData,
-      id: Date.now(),
-      image: recipeData.image || 'https://via.placeholder.com/400x200?text=No+Photo'
+    async function loadRecipes() {
+      if (user) {
+        // Пользователь вошёл — грузим его рецепты из базы
+        try {
+          setLoading(true)
+          const data = await recipesAPI.getAll()
+          setRecipes(data)
+        } catch (err) {
+          toast.error('Не удалось загрузить рецепты')
+          console.error(err)
+          setRecipes([])
+        } finally {
+          setLoading(false)
+        }
+      } else {
+        // Гость — показываем демо-рецепты (или пусто)
+        setRecipes(DEMO_RECIPES)
+        setLoading(false)
+      }
     }
-    setRecipes([newRecipe, ...recipes])
-    return newRecipe
+    
+    loadRecipes()
+  }, [user])
+
+  // Добавить рецепт
+  const addRecipe = async (recipeData) => {
+    if (!user) {
+      toast.error('Войдите, чтобы добавлять рецепты')
+      return null
+    }
+
+    try {
+      const newRecipe = await recipesAPI.create({
+        ...recipeData,
+        is_public: false // По умолчанию приватный
+      })
+      setRecipes([newRecipe, ...recipes])
+      toast.success(`✅ Рецепт "${newRecipe.title}" добавлен!`)
+      return newRecipe
+    } catch (err) {
+      toast.error('Не удалось добавить рецепт')
+      console.error(err)
+      return null
+    }
   }
 
-  // Обновление существующего рецепта
-  const updateRecipe = (id, recipeData) => {
-    setRecipes(recipes.map(r => 
-      r.id === id 
-        ? { ...r, ...recipeData }
-        : r
-    ))
+  // Обновить рецепт
+  const updateRecipe = async (id, recipeData) => {
+    if (!user) {
+      toast.error('Войдите, чтобы редактировать рецепты')
+      return
+    }
+
+    try {
+      const updatedRecipe = await recipesAPI.update(id, {
+        ...recipeData,
+        is_public: recipeData.is_public || false
+      })
+      setRecipes(recipes.map(r => r.id === id ? updatedRecipe : r))
+      toast.success(`✅ Рецепт "${updatedRecipe.title}" обновлён!`)
+    } catch (err) {
+      toast.error('Не удалось обновить рецепт')
+      console.error(err)
+    }
   }
 
-  // Удаление рецепта
-  const deleteRecipe = (id) => {
-    setRecipes(recipes.filter(r => r.id !== id))
+  // Удалить рецепт
+  const deleteRecipe = async (id) => {
+    if (!user) {
+      toast.error('Войдите, чтобы удалять рецепты')
+      return
+    }
+
+    try {
+      const recipeToDelete = recipes.find(r => r.id === id)
+      await recipesAPI.delete(id)
+      setRecipes(recipes.filter(r => r.id !== id))
+      if (recipeToDelete) {
+        toast.info(`🗑️ Рецепт "${recipeToDelete.title}" удалён`)
+      }
+    } catch (err) {
+      toast.error('Не удалось удалить рецепт')
+      console.error(err)
+    }
   }
 
-  // Импорт рецептов
+  // Импорт рецептов (пока оставим как есть, потом можно доработать)
   const importRecipes = (importedRecipes) => {
-    setRecipes(importedRecipes)
-    return importedRecipes.length
+    if (!user) {
+      toast.error('Войдите, чтобы импортировать рецепты')
+      return 0
+    }
+    // TODO: реализовать импорт через API
+    toast.info('Импорт пока в разработке')
+    return 0
   }
 
   return {
     recipes,
+    loading,
     addRecipe,
     updateRecipe,
     deleteRecipe,

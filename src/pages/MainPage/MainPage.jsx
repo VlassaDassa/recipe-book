@@ -15,7 +15,7 @@ function MainPage() {
   const navigate = useNavigate()
   
   // Кастомные хуки
-  const { recipes, addRecipe, updateRecipe, deleteRecipe, importRecipes } = useRecipes()
+  const { recipes, loading, addRecipe, updateRecipe, deleteRecipe, importRecipes } = useRecipes()
   const { filteredRecipes, searchQuery, setSearchQuery, selectedCategory, setSelectedCategory } = useRecipeFilters(recipes)
   const {
     isFormOpen,
@@ -29,16 +29,13 @@ function MainPage() {
   } = useRecipeForm()
 
   // Обработчик сохранения рецепта
-  const handleSaveRecipe = () => {
+    const handleSaveRecipe = () => {
     const preparedData = getPreparedFormData()
     
-  
     if (editingId) {
       updateRecipe(editingId, preparedData)
-       toast.success(`✅ Рецепт "${preparedData.title}" обновлён!`)
     } else {
       addRecipe(preparedData)
-       toast.success(`✅ Рецепт "${preparedData.title}" добавлен!`)
     }
     closeForm()
   }
@@ -81,7 +78,11 @@ function MainPage() {
       />
 
       <main className="recipe-grid">
-        {filteredRecipes.length === 0 ? (
+        {loading ? (
+          <div className="empty-state">
+            <p>⏳ Загрузка рецептов...</p>
+          </div>
+        ) : filteredRecipes.length === 0 ? (
           <div className="empty-state">
             {recipes.length === 0 ? (
               <>
@@ -101,10 +102,7 @@ function MainPage() {
               key={recipe.id}
               recipe={recipe}
               onEdit={() => openEditForm(recipe)}
-              onDelete={() => {
-                deleteRecipe(recipe.id)
-                toast.info(`🗑️ Рецепт "${recipe.title}" удалён`)
-              }}
+              onDelete={() => deleteRecipe(recipe.id)}
               onClick={() => navigate(`/recipe/${recipe.id}`)}
             />
           ))

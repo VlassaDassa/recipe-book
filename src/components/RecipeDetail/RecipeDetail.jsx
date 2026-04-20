@@ -20,8 +20,17 @@ const CATEGORY_EMOJI = {
 function RecipeDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { recipes, deleteRecipe } = useRecipes()
-  
+  const { recipes, loading, deleteRecipe } = useRecipes()
+ 
+  // Проверка загрузки
+  if (loading) {
+    return (
+      <div className="not-found">
+        <p>⏳ Загрузка...</p>
+      </div>
+    )
+  }
+
   const recipe = recipes.find(r => r.id === parseInt(id))
   
   // Если рецепт не найден
