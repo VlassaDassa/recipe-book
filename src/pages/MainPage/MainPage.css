@@ -1,0 +1,110 @@
+/* Контейнер главной страницы */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Сетка для карточек */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* Пустое состояние */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #888;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.empty-state p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Затемнение фона (для модалок) */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Анимация затемнения */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========== АДАПТАЦИЯ ДЛЯ ПЛАНШЕТОВ ========== */
+@media (max-width: 768px) {
+  .app {
+    padding: 15px;
+  }
+
+  .recipe-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .empty-state {
+    padding: 40px 15px;
+    min-height: 250px;
+  }
+
+  .empty-state p:first-child {
+    font-size: 1.3rem;
+  }
+}
+
+/* ========== АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ ========== */
+
+@media (max-width: 600px) {
+  .app {
+    padding: 12px;
+    width: 100%;
+    overflow-x: hidden; /* Убираем горизонтальный скролл */
+  }
+
+  .recipe-grid {
+    grid-template-columns: 1fr; /* Одна колонка на всю ширину */
+    gap: 16px;
+    width: 100%;
+  }
+
+  /* Карточка занимает 100% ширины родителя */
+  .recipe-card {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* ========== ДЛЯ ОЧЕНЬ МАЛЕНЬКИХ ЭКРАНОВ ========== */
+@media (max-width: 400px) {
+  .app {
+    padding: 10px;
+  }
+
+  .recipe-grid {
+    gap: 12px;
+  }
+}

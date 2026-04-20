@@ -1,0 +1,67 @@
+/* ========== ОБЩИЕ СТИЛИ ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f7f3;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========== КОНТЕЙНЕР ПРИЛОЖЕНИЯ ========== */
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ========== СЕТКА ДЛЯ КАРТОЧЕК ========== */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+/* ========== ПУСТОЕ СОСТОЯНИЕ ========== */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  color: #888;
+}
+
+.empty-state p:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* ========== ЗАТЕМНЕНИЕ ФОНА (ДЛЯ МОДАЛОК) ========== */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+  animation: fadeIn 0.2s ease;
+}
+
+/* ========== АНИМАЦИЯ ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

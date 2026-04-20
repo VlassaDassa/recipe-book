@@ -1,0 +1,301 @@
+/* ========== БОКОВАЯ ПАНЕЛЬ ФОРМЫ ========== */
+.form-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
+  background: white;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  transition: right 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-panel.open {
+  right: 0;
+}
+
+.form-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #eee;
+}
+
+.form-panel-header h2 {
+  color: #e67e22;
+  font-size: 1.8rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #999;
+  padding: 0 10px;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.form-panel-body {
+  flex: 1;
+  padding: 25px;
+  overflow-y: auto;
+}
+
+/* ========== ГРУППЫ ПОЛЕЙ ========== */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  color: #333;
+  transition: border 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #e67e22;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+/* ========== СЕКЦИИ (ИНГРЕДИЕНТЫ, ШАГИ) ========== */
+.form-section {
+  margin: 25px 0;
+  padding-top: 15px;
+  border-top: 1px dashed #ddd;
+}
+
+.form-section > label {
+  font-weight: 700;
+  display: block;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+/* ========== ИНГРЕДИЕНТЫ ========== */
+.ingredient-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+/* ========== ШАГИ ========== */
+.step-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  background: #f0e6d2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #d35400;
+  flex-shrink: 0;
+}
+
+/* ========== КНОПКИ ДОБАВЛЕНИЯ И УДАЛЕНИЯ ========== */
+.add-more-btn {
+  background: none;
+  border: 1px dashed #e67e22;
+  color: #e67e22;
+  padding: 10px;
+  width: 100%;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.add-more-btn:hover {
+  background: #fdebd0;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 5px;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  opacity: 1;
+}
+
+/* ========== КНОПКИ ФОРМЫ (ОТМЕНА / СОХРАНИТЬ) ========== */
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 12px;
+  background: #f1f2f6;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #e2e4e8;
+}
+
+.save-btn {
+  flex: 2;
+  padding: 12px;
+  background: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background: #d35400;
+}
+
+/* ========== АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ ========== */
+@media (max-width: 600px) {
+  .form-panel {
+    max-width: 100%;
+  }
+
+  .form-panel-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .ingredient-row {
+    flex-wrap: wrap;
+  }
+
+  .ingredient-row input:first-child {
+    width: 100%;
+  }
+}
+
+/* ========== СТИЛИ ОШИБОК ========== */
+.form-group.has-error input,
+.form-group.has-error select,
+.form-section.has-error input {
+  border-color: #e74c3c !important;
+}
+
+.error-message {
+  display: block;
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
+
+.save-btn.disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.save-btn.disabled:hover {
+  background: #bdc3c7;
+  transform: none;
+}
+
+/* Убираем спиннеры в числовых полях */
+.form-group input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield; /* Для Firefox */
+  -webkit-appearance: textfield; /* Для Safari/Chrome */
+}
+
+.form-group input[type="number"]::-webkit-outer-spin-button,
+.form-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ingredient-row input:disabled {
+  background: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+  border-color: #ddd;
+}
+
+@media (max-width: 480px) {
+  .form-panel-body {
+    padding: 15px;
+  }
+  
+  .form-panel-header {
+    padding: 15px;
+  }
+  
+  .form-panel-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .ingredient-row {
+    flex-wrap: wrap;
+  }
+  
+  .ingredient-row input:first-child {
+    width: 100% !important;
+  }
+  
+  .ingredient-row input[type="number"],
+  .ingredient-row select {
+    width: auto !important;
+    flex: 1;
+  }
+}
