@@ -3,16 +3,19 @@ import './App.css'
 import MainPage from './pages/MainPage/MainPage'
 import RecipeDetail from './components/RecipeDetail/RecipeDetail'
 import { ToastContainer } from './components/Toast'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
   return (
-    <Router>
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/recipe/:id" element={<RecipeDetail />} />
-      </Routes>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <ToastContainer />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/recipe/:id" element={<RecipeDetail />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   )
 }
 
