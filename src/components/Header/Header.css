@@ -134,3 +134,22 @@
     font-size: 0.75rem;
   }
 }
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #e67e22;
+  object-fit: cover;
+}
+
+.user-name {
+  color: #2c3e50;
+  font-weight: 500;
+}
